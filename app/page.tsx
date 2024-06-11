@@ -1,4 +1,3 @@
-// page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import Search from './components/Search';
@@ -11,9 +10,41 @@ import { PiWind } from "react-icons/pi";
 import { FaThermometerEmpty } from "react-icons/fa";
 import getFormattedWeatherData from './utils/weather';
 
+interface WeatherData {
+  hourly: {
+    time: string;
+    temp: number;
+    icon: string;
+  }[];
+  daily: {
+    day: string;
+    temp: number;
+    icon: string;
+  }[];
+  lat: number;
+  lon: number;
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  humidity: number;
+  pressure: number;
+  visibility: number;
+  name: string;
+  country: string;
+  sunrise: string;
+  sunset: string;
+  speed: number;
+  details: string;
+  icon: string;
+  formattedLocalTime: string;
+  timezone: number;
+}
+
+
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [weatherData, setWeatherData] = useState(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null); // Updated type
   const [city, setCity] = useState("London");
 
   useEffect(() => {
@@ -28,7 +59,7 @@ export default function Home() {
     getFormattedWeatherData({ q: city }).then(data => setWeatherData(data));
   }, [city]);
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: string | { lat: number; lon: number }) => {
     if (typeof query === 'string') {
       setCity(query);
     } else {
@@ -68,6 +99,7 @@ export default function Home() {
           <Horizon icon={MdKeyboardArrowDown} label="Low" time={`${Math.round(weatherData.temp_min)}°`} />
         </div>
         <Forecast title="3 Hour Step Forecast" items={weatherData.hourly} />
+        <Forecast title="Daily Forecast" items={weatherData.daily} />
       </div>
     </main>
   );
