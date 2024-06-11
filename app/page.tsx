@@ -1,3 +1,4 @@
+// page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import Search from './components/Search';
@@ -28,7 +29,11 @@ export default function Home() {
   }, [city]);
 
   const handleSearch = (query) => {
-    setCity(query);
+    if (typeof query === 'string') {
+      setCity(query);
+    } else {
+      getFormattedWeatherData(query).then(data => setWeatherData(data));
+    }
   };
 
   if (!weatherData) {
@@ -62,7 +67,7 @@ export default function Home() {
           <Horizon icon={MdKeyboardArrowUp} label="High" time={`${Math.round(weatherData.temp_max)}°`} />
           <Horizon icon={MdKeyboardArrowDown} label="Low" time={`${Math.round(weatherData.temp_min)}°`} />
         </div>
-        <Forecast />
+        <Forecast title="3 Hour Step Forecast" items={weatherData.hourly} />
       </div>
     </main>
   );

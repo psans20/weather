@@ -16,7 +16,7 @@ export default function Search({ onSearch }) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
-        onSearch(`${latitude},${longitude}`);
+        onSearch({ lat: latitude, lon: longitude });
       }, (error) => {
         console.error('Error fetching location:', error);
       });

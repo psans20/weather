@@ -1,11 +1,13 @@
 const API_KEY = "d6987fdc89145b5414819e74fec862da";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
 
-const getWeatherData = (infoType, searchParams) => {
+const getWeatherData = async (infoType, searchParams) => {
     const url = new URL(BASE_URL + infoType);
     url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
 
-    return fetch(url).then((res) => res.json());
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
 };
 
 const iconURLFromCode = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`;
@@ -74,16 +76,63 @@ const formatCurrent = (data) => {
         details,
         icon: iconURLFromCode(icon),
         formattedLocalTime,
+        timezone,
     };
+};
+
+const formatHourlyForecast = (data, timezone) => {
+    if (!data || !data.slice) {
+        console.error("Hourly forecast data is not in expected format:", data);
+        return [];
+    }
+    return data.slice(0, 5).map(item => {
+        const { dt, main: { temp }, weather } = item;
+        const { icon } = weather[0];
+        return {
+            time: formatToTimeOnly(dt, timezone),
+            temp: temp - 273.15, // Convert Kelvin to Celsius
+            icon: iconURLFromCode(icon),
+        };
+    });
+};
+
+const formatDailyForecast = (data, timezoneOffset) => {
+    if (!data || !data.slice) {
+        console.error("Daily forecast data is not in expected format:", data);
+        return [];
+    }
+    return data.slice(0, 5).map(item => {
+        const { dt, temp: { day }, weather } = item;
+        const { icon } = weather[0];
+        return {
+            day: new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date((dt + timezoneOffset) * 1000)),
+            temp: day - 273.15, // Convert Kelvin to Celsius
+            icon: iconURLFromCode(icon),
+        };
+    });
 };
 
 const getFormattedWeatherData = async (searchParams) => {
     const formattedCurrentWeather = await getWeatherData(
         "weather",
-        searchParams
+        searchParams.q ? { q: searchParams.q } : { lat: searchParams.lat, lon: searchParams.lon }
     ).then(formatCurrent);
-    
-    return { ...formattedCurrentWeather };
+
+    const { lat, lon, timezone } = formattedCurrentWeather;
+
+    const hourlyForecastData = await getWeatherData(
+        "forecast",
+        { lat, lon, ...searchParams }
+    );
+    const formattedHourlyForecast = formatHourlyForecast(hourlyForecastData.list, timezone);
+
+    const dailyForecastData = await getWeatherData(
+        "onecall",
+        { lat, lon, exclude: "current,minutely,hourly,alerts", appid: API_KEY }
+    );
+    const formattedDailyForecast = formatDailyForecast(dailyForecastData.daily, timezone);
+
+    return { ...formattedCurrentWeather, hourly: formattedHourlyForecast, daily: formattedDailyForecast };
 };
 
 export default getFormattedWeatherData;
