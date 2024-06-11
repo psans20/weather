@@ -5,7 +5,7 @@ export const Forecast = () => {
     return (
         <div className="w-72 md:w-[900px]">
             <div className='flex items-center justify-start mt-6'>
-                <p className='font-medium uppercase'>3 hour step forecast</p>
+                <p className='font-medium uppercase'>daily forecast</p>
             </div>
             <hr className='my-1' />
             <div className='flex items-center justify-evenly w-full'>

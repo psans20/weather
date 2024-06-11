@@ -63,7 +63,6 @@ export default function Home() {
           <Horizon icon={MdKeyboardArrowDown} label="Low" time={`${Math.round(weatherData.temp_min)}°`} />
         </div>
         <Forecast />
-        <Forecast />
       </div>
     </main>
   );
