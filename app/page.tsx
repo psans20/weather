@@ -87,18 +87,18 @@ export default function Home() {
   const bgGradient = getBackgroundGradient(Math.round(weatherData.temp));
 
   return (
-    <main className={`bg-gradient-to-br shadow-xl shadow-gray-400 ${bgGradient} p-4 space-y-8 h-screen`}>
+    <main className={`bg-gradient-to-br shadow-xl shadow-gray-400 ${bgGradient} p-4 space-y-8 h-screen transition-all duration-500 ease-in-out`}>
       <Search onSearch={handleSearch} />
-      <h2 id="date" className="text-center font-extralight text-xl text-gray-200">
+      <h2 id="date" className="text-center font-extralight text-xl text-gray-200 transition-all duration-500 ease-in-out">
         {weatherData.formattedLocalTime}
       </h2>
-      <h2 className="text-center text-2xl">{weatherData.name}, {weatherData.country}</h2>
-      <h2 className="text-cyan-200 text-center">{weatherData.details}</h2>
+      <h2 className="text-center text-2xl transition-all duration-500 ease-in-out">{weatherData.name}, {weatherData.country}</h2>
+      <h2 className="text-cyan-200 text-center transition-all duration-500 ease-in-out">{weatherData.details}</h2>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center transition-all duration-500 ease-in-out">
         <div className="flex flex-row items-center justify-around w-full py-3 space-x-8 lg:space-x-0 md:px-24 lg:px-48 xl:px-72">
-          <img src={weatherData.icon} className="w-20" alt="Weather Icon" />
-          <h2 className="text-4xl text-center">{Math.round(weatherData.temp)}°</h2>
+          <img src={weatherData.icon} className="w-20 transition-all duration-500 ease-in-out" alt="Weather Icon" />
+          <h2 className="text-4xl text-center transition-all duration-500 ease-in-out">{Math.round(weatherData.temp)}°</h2>
 
           <div className="flex flex-col space-y-3">
             <Thermometer icon={FaThermometerEmpty} property="Real Feel" calculation={`${Math.round(weatherData.feels_like)}°`} />
@@ -107,13 +107,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:flex md:flex-row md:justify-around md:gap-x-10 md:my-12 my-10 gap-10">
+        <div className="grid grid-cols-2 md:flex md:flex-row md:justify-around md:gap-x-10 md:my-12 my-10 gap-10 transition-all duration-500 ease-in-out">
           <Horizon icon={GiSunrise} label="Sunrise" time={weatherData.sunrise} />
           <Horizon icon={GiSunset} label="Sunset" time={weatherData.sunset} />
           <Horizon icon={MdKeyboardArrowUp} label="High" time={`${Math.round(weatherData.temp_max)}°`} />
           <Horizon icon={MdKeyboardArrowDown} label="Low" time={`${Math.round(weatherData.temp_min)}°`} />
         </div>
         <Forecast title="3 Hour Step Forecast" items={weatherData.hourly} />
+
       </div>
     </main>
   );
