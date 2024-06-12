@@ -1,4 +1,3 @@
-// components/Forecast.jsx
 import React from 'react';
 
 export const Forecast = ({ title, items }) => {

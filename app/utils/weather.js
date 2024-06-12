@@ -22,7 +22,7 @@ const formatToLocalTime = (secs, timezoneOffset, format = "cccc, dd LLL yyyy | L
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
-        timeZone: 'UTC' // Ensure the correct handling of time zone
+        timeZone: 'UTC' 
     }).format(localTime);
 };
 
@@ -32,7 +32,7 @@ const formatToTimeOnly = (secs, timezoneOffset) => {
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
-        timeZone: 'UTC' // Ensure the correct handling of time zone
+        timeZone: 'UTC' 
     }).format(localTime);
 };
 
@@ -52,7 +52,7 @@ const formatCurrent = (data) => {
     const { main: details, icon } = weather[0];
     const formattedLocalTime = formatToLocalTime(dt, timezone);
 
-    // Convert temperatures from Kelvin to Celsius
+
     const tempCelsius = temp - 273.15;
     const feelsLikeCelsius = feels_like - 273.15;
     const tempMinCelsius = temp_min - 273.15;
@@ -90,7 +90,7 @@ const formatHourlyForecast = (data, timezone) => {
         const { icon } = weather[0];
         return {
             time: formatToTimeOnly(dt, timezone),
-            temp: temp - 273.15, // Convert Kelvin to Celsius
+            temp: temp - 273.15, 
             icon: iconURLFromCode(icon),
         };
     });
@@ -106,7 +106,7 @@ const formatDailyForecast = (data, timezoneOffset) => {
         const { icon } = weather[0];
         return {
             day: new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date((dt + timezoneOffset) * 1000)),
-            temp: day - 273.15, // Convert Kelvin to Celsius
+            temp: day - 273.15, 
             icon: iconURLFromCode(icon),
         };
     });

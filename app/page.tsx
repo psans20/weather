@@ -57,15 +57,15 @@ const getBackgroundGradient = (temp: number) => {
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null); // Updated type
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null); 
   const [city, setCity] = useState("London");
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDate(new Date());
-    }, 1000); // Update every second
+    }, 1000);
 
-    return () => clearInterval(timer); // Cleanup the interval on component unmount
+    return () => clearInterval(timer); 
   }, []);
 
   useEffect(() => {
