@@ -41,6 +41,19 @@ interface WeatherData {
   timezone: number;
 }
 
+const getBackgroundGradient = (temp: number) => {
+  if (temp < 0) {
+    return 'from-blue-800 to-blue-400';
+  } else if (temp < 10) {
+    return 'from-blue-700 to-blue-300';
+  } else if (temp < 20) {
+    return 'from-cyan-600 to-blue-700';
+  } else if (temp < 30) {
+    return 'from-yellow-500 to-orange-600';
+  } else {
+    return 'from-fuchsia-700 to-orange-600';
+  }
+};
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -71,8 +84,10 @@ export default function Home() {
     return <div>Loading...</div>;
   }
 
+  const bgGradient = getBackgroundGradient(Math.round(weatherData.temp));
+
   return (
-    <main className="bg-gradient-to-br shadow-xl shadow-gray-400 from-cyan-600 to-blue-700 p-4 space-y-8 h-screen">
+    <main className={`bg-gradient-to-br shadow-xl shadow-gray-400 ${bgGradient} p-4 space-y-8 h-screen`}>
       <Search onSearch={handleSearch} />
       <h2 id="date" className="text-center font-extralight text-xl text-gray-200">
         {weatherData.formattedLocalTime}
@@ -99,7 +114,6 @@ export default function Home() {
           <Horizon icon={MdKeyboardArrowDown} label="Low" time={`${Math.round(weatherData.temp_min)}°`} />
         </div>
         <Forecast title="3 Hour Step Forecast" items={weatherData.hourly} />
-        <Forecast title="Daily Forecast" items={weatherData.daily} />
       </div>
     </main>
   );
