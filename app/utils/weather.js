@@ -85,13 +85,26 @@ const formatHourlyForecast = (data, timezone) => {
         console.error("Hourly forecast data is not in expected format:", data);
         return [];
     }
-    return data.slice(0, 5).map(item => {
+
+    // Take only the next 8 3-hour intervals (24 hours)
+    return data.slice(0, 8).map(item => {
         const { dt, main: { temp }, weather } = item;
         const { icon } = weather[0];
+        
+        // Create a date object using the timestamp and add timezone offset
+        const date = new Date(dt * 1000);
+        date.setSeconds(date.getSeconds() + timezone);
+        
+        const formattedTime = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            hour12: true,
+            timeZone: 'UTC'
+        }).format(date);
+
         return {
-            time: formatToTimeOnly(dt, timezone),
-            temp: temp - 273.15, 
-            icon: iconURLFromCode(icon),
+            time: formattedTime,
+            temp: temp - 273.15,
+            icon: icon
         };
     });
 };
