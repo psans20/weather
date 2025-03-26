@@ -81,6 +81,13 @@ export default function Home() {
   // Function to get background image based on location and weather
   const getBackgroundImage = async (weather: string, location: string) => {
     try {
+        const unsplashKey = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
+        
+        if (!unsplashKey) {
+            console.error('Unsplash API key is not configured');
+            return null;
+        }
+
         // Try multiple search strategies
         const searchQueries = [
             // First try exact location with landmarks
@@ -98,12 +105,15 @@ export default function Home() {
                 `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=20`,
                 {
                     headers: {
-                        Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
+                        Authorization: `Client-ID ${unsplashKey}`,
                     },
                 }
             );
 
-            if (!response.ok) continue;
+            if (!response.ok) {
+                console.error(`Unsplash API error: ${response.status} - ${response.statusText}`);
+                continue;
+            }
 
             const data = await response.json();
             
@@ -158,7 +168,7 @@ export default function Home() {
             `https://api.unsplash.com/search/photos?query=${encodeURIComponent(weatherTerms[weather] || `${location} weather`)}&orientation=landscape&per_page=1`,
             {
                 headers: {
-                    Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
+                    Authorization: `Client-ID ${unsplashKey}`,
                 },
             }
         );
