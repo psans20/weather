@@ -245,14 +245,16 @@ export default function Home() {
       {backgroundImage && (
         <>
           <div 
-            className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+            className="absolute inset-0 bg-cover bg-center transition-all duration-[2000ms] ease-in-out"
             style={{
               backgroundImage: `url('${backgroundImage}')`,
-              filter: "brightness(0.7)"
+              filter: "brightness(0.7)",
+              opacity: 1,
+              transform: "scale(1.05)"
             }}
           />
           <div 
-            className="absolute inset-0 bg-black bg-opacity-30"
+            className="absolute inset-0 bg-black bg-opacity-30 transition-opacity duration-[2000ms] ease-in-out"
             aria-hidden="true"
           />
         </>
@@ -271,11 +273,11 @@ export default function Home() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search a country/city..."
-              className="w-full bg-white/10 backdrop-blur-md text-white placeholder-white/70 px-4 py-2 pr-10 rounded-full border border-white/20 focus:outline-none focus:border-white/40 transition-all"
+              className="w-full bg-white/10 backdrop-blur-md text-white placeholder-white/70 px-4 py-2 pr-10 rounded-full border border-white/20 focus:outline-none focus:border-white/40 transition-all duration-500 ease-in-out"
             />
             <button
               type="submit"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-500 ease-in-out"
             >
               <MdSearch size={20} />
             </button>
@@ -287,33 +289,33 @@ export default function Home() {
           {/* Top Section */}
           <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start text-center sm:text-left">
             {/* Left Side - Temperature and Location */}
-            <div className="space-y-4 w-full sm:w-auto mb-6 sm:mb-0">
+            <div className="space-y-4 w-full sm:w-auto mb-6 sm:mb-0 transition-all duration-700 ease-in-out">
               <div className="flex items-end justify-center sm:justify-start">
-                <span className="text-6xl sm:text-8xl font-light">{Math.round(weatherData.temp)}</span>
+                <span className="text-6xl sm:text-8xl font-light transition-all duration-700 ease-in-out">{Math.round(weatherData.temp)}</span>
                 <span className="text-3xl sm:text-4xl mb-3 sm:mb-4 ml-2">°C</span>
                 <span className="text-xl sm:text-2xl mb-3 sm:mb-4 ml-4 text-gray-300">F</span>
               </div>
               
               <div className="flex items-center justify-center sm:justify-start space-x-2">
                 <WiDaySunny className="text-2xl" />
-                <span className="text-lg sm:text-xl">{weatherData.details}</span>
+                <span className="text-lg sm:text-xl transition-all duration-700 ease-in-out">{weatherData.details}</span>
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-2xl sm:text-3xl">{weatherData.name}</h2>
-                <p className="text-gray-300">{weatherData.country}</p>
+                <h2 className="text-2xl sm:text-3xl transition-all duration-700 ease-in-out">{weatherData.name}</h2>
+                <p className="text-gray-300 transition-all duration-700 ease-in-out">{weatherData.country}</p>
               </div>
             </div>
 
             {/* Right Side - Time and Date */}
-            <div className="text-center sm:text-right mb-6 sm:mb-0">
-              <h2 className="text-3xl sm:text-4xl">{formatTime(localTime)}</h2>
-              <p className="text-gray-300">
+            <div className="text-center sm:text-right mb-6 sm:mb-0 transition-all duration-700 ease-in-out">
+              <h2 className="text-3xl sm:text-4xl transition-all duration-700 ease-in-out">{formatTime(localTime)}</h2>
+              <p className="text-gray-300 transition-all duration-700 ease-in-out">
                 {formatDate(localTime)}
               </p>
               <div className="flex space-x-4 mt-2 justify-center sm:justify-end overflow-x-auto">
                 {timeZones.map((zone) => (
-                  <span key={zone} className="text-gray-300 text-sm cursor-pointer hover:text-white whitespace-nowrap">
+                  <span key={zone} className="text-gray-300 text-sm cursor-pointer hover:text-white whitespace-nowrap transition-colors duration-500 ease-in-out">
                     {zone}
                   </span>
                 ))}
@@ -322,7 +324,7 @@ export default function Home() {
           </div>
 
           {/* Bottom Section */}
-          <div className="w-full bg-black/40 backdrop-blur-sm rounded-t-xl p-4 sm:p-8">
+          <div className="w-full bg-black/40 backdrop-blur-sm rounded-t-xl p-4 sm:p-8 transition-all duration-700 ease-in-out">
             {/* Tabs */}
             <div className="flex space-x-4 sm:space-x-8 mb-6 overflow-x-auto pb-2 justify-between sm:justify-start">
               {[
@@ -332,10 +334,10 @@ export default function Home() {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  className={`text-base sm:text-lg whitespace-nowrap flex-1 sm:flex-none px-2 py-1 ${
+                  className={`text-base sm:text-lg whitespace-nowrap flex-1 sm:flex-none px-2 py-1 transition-all duration-500 ease-in-out ${
                     activeTab === tab.id
                       ? 'text-white border-b-2'
-                      : 'text-gray-400'
+                      : 'text-gray-400 hover:text-white'
                   }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
@@ -346,38 +348,26 @@ export default function Home() {
 
             {/* Weather Details Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 mb-6">
-              <div className="flex items-center space-x-3 bg-black/20 rounded-lg p-3">
-                <WiHumidity className="text-2xl" />
-                <div>
-                  <p className="text-gray-300 text-sm">Humidity</p>
-                  <p className="text-base sm:text-lg">{weatherData.humidity}%</p>
+              {[
+                { icon: <WiHumidity className="text-2xl" />, label: "Humidity", value: `${weatherData.humidity}%` },
+                { icon: <FaEye className="text-2xl" />, label: "Visibility", value: "Unlimited" },
+                { icon: <FaTemperatureHigh className="text-2xl" />, label: "UV Index", value: `${weatherData.uv_index || '0'} of 10` },
+                { icon: <WiDaySunny className="text-2xl" />, label: "Dew Point", value: `${Math.round(weatherData.dew_point || 16)}°` }
+              ].map((detail, index) => (
+                <div key={index} className="flex items-center space-x-3 bg-black/20 rounded-lg p-3 transition-all duration-500 ease-in-out hover:bg-black/30">
+                  {detail.icon}
+                  <div>
+                    <p className="text-gray-300 text-sm">{detail.label}</p>
+                    <p className="text-base sm:text-lg">{detail.value}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-3 bg-black/20 rounded-lg p-3">
-                <FaEye className="text-2xl" />
-                <div>
-                  <p className="text-gray-300 text-sm">Visibility</p>
-                  <p className="text-base sm:text-lg">Unlimited</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 bg-black/20 rounded-lg p-3">
-                <FaTemperatureHigh className="text-2xl" />
-                <div>
-                  <p className="text-gray-300 text-sm">UV Index</p>
-                  <p className="text-base sm:text-lg">{weatherData.uv_index || '0'} of 10</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 bg-black/20 rounded-lg p-3">
-                <WiDaySunny className="text-2xl" />
-                <div>
-                  <p className="text-gray-300 text-sm">Dew Point</p>
-                  <p className="text-base sm:text-lg">{Math.round(weatherData.dew_point || 16)}°</p>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Dynamic Forecast Section */}
-            {renderForecast()}
+            <div className="transition-all duration-700 ease-in-out">
+              {renderForecast()}
+            </div>
 
             {/* Credit Line */}
             <div className="mt-4 text-center text-xs text-gray-400">
@@ -387,7 +377,7 @@ export default function Home() {
                   href="https://umarhussain.netlify.app/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors underline"
+                  className="hover:text-white transition-colors duration-500 ease-in-out underline"
                 >
                   Umar Hussain
                 </a>
